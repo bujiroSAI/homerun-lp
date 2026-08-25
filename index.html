@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ホームラン｜小さな会社のホームページを10万円・1ページで｜スタジオサイタマ合同会社</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&family=Alfa+Slab+One&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f4f2ec;
+  --paper: #fbfaf6;
+  --ink: #1b1b18;
+  --red: #c0392b;
+  --line: #dcdad2;
+  --sub: #45433c;
+  --boxg1: #e9e7e1;
+  --boxg2: #d8d6cf;
+  --grid: rgba(27,27,24,.05);
+  --grid-strong: rgba(27,27,24,.10);
+  --mono: 'IBM Plex Mono', 'SF Mono', Menlo, monospace;
+  --r-s: 10px;
+  --r-m: 16px;
+  --r-l: 24px;
+}
+html { scroll-behavior: auto; }
+body {
+  background:
+    radial-gradient(1600px 1000px at 82% -12%, rgba(192,57,43,.12), rgba(192,57,43,.04) 45%, transparent 68%),
+    radial-gradient(1300px 900px at -14% 22%, rgba(213,178,120,.18), transparent 58%),
+    radial-gradient(1000px 700px at 108% 55%, rgba(192,57,43,.07), transparent 60%),
+    radial-gradient(1800px 1200px at 50% 118%, rgba(27,27,24,.12), transparent 55%),
+    linear-gradient(180deg, #faf8f2, var(--bg) 32%, #efece3 100%);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: 'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Noto Sans JP', sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+}
+/* ---- テック層: 図面注記（mono）・座標マーカー・計測罫 ---- */
+.mono { font-family: var(--mono); letter-spacing: .06em; }
+.tech-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: var(--sub);
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.tech-tag::before { content: ""; width: 7px; height: 7px; background: var(--red); display: inline-block; }
+.crosshair { position: relative; }
+.crosshair::before, .crosshair::after {
+  content: "+";
+  position: absolute;
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--grid-strong);
+  line-height: 1;
+}
+.crosshair::before { top: 10px; left: 10px; }
+.crosshair::after { bottom: 10px; right: 10px; }
+/* 図面の寸法線（モック注記用） */
+.dim { position: absolute; font-family: var(--mono); font-size: 10px; letter-spacing: .1em; color: var(--sub); }
+.dim .dline { position: absolute; background: var(--sub); opacity: .45; }
+.dim-r { top: 8%; bottom: 8%; right: -34px; width: 30px; }
+.dim-r .dline { top: 0; bottom: 0; left: 8px; width: 1px; }
+.dim-r .dline::before, .dim-r .dline::after { content: ""; position: absolute; left: -4px; width: 9px; height: 1px; background: var(--sub); }
+.dim-r .dline::before { top: 0; } .dim-r .dline::after { bottom: 0; }
+.dim-r span { position: absolute; top: 50%; left: 12px; transform: rotate(90deg) translateX(-50%); transform-origin: 0 0; white-space: nowrap; }
+.dim-b { left: 6%; right: 6%; bottom: -30px; height: 26px; }
+.dim-b .dline { left: 0; right: 0; top: 8px; height: 1px; }
+.dim-b .dline::before, .dim-b .dline::after { content: ""; position: absolute; top: -4px; width: 1px; height: 9px; background: var(--sub); }
+.dim-b .dline::before { left: 0; } .dim-b .dline::after { right: 0; }
+.dim-b span { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); white-space: nowrap; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+img { max-width: 100%; }
+mark.tbd {
+  background: transparent;
+  color: inherit;
+  border-bottom: 1px dashed var(--red);
+  padding: 0 .08em;
+}
+.wrap { width: min(1160px, 92vw); margin-inline: auto; }
+
+/* ---- ローダー（野球: ボール→スイング→ホームラン→ロゴ） ---- */
+#loader {
+  position: fixed; inset: 0; z-index: 90;
+  background:
+    radial-gradient(1200px 800px at 50% -10%, rgba(192,57,43,.10), transparent 60%),
+    radial-gradient(1400px 1000px at 50% 115%, rgba(27,27,24,.10), transparent 60%),
+    linear-gradient(180deg, #fbf9f3, #f1eee5);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+html.static #loader { display: none; }
+html.lock, html.lock body { overflow: hidden; height: 100%; }
+@media (prefers-reduced-motion: reduce) { #loader { display: none; } }
+.ld2 { position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.ld-word {
+  font-family: 'Alfa Slab One', 'Zen Kaku Gothic New', serif;
+  font-size: clamp(56px, 12vw, 170px);
+  line-height: 1;
+  color: var(--red);
+  letter-spacing: .02em;
+  text-shadow: 0 8px 40px rgba(192,57,43,.25);
+  white-space: nowrap;
+  will-change: transform, opacity;
+}
+.ld-copy {
+  color: var(--red);
+  font-weight: 900;
+  font-size: clamp(20px, 2.6vw, 34px);
+  letter-spacing: .12em;
+  margin-bottom: clamp(10px, 1.6vh, 22px);
+  will-change: transform, opacity;
+}
+.ld-bird {
+  height: min(58vh, 560px); width: auto;
+  margin-top: clamp(-30px, -3vh, -10px);
+  will-change: transform, opacity;
+}
+
+/* ---- 固定ヘッダ（hero通過後に出現） ---- */
+.site-head {
+  position: fixed; inset: 0 0 auto 0; z-index: 40;
+  display: flex; align-items: center; justify-content: space-between; gap: 18px;
+  padding: 10px clamp(16px, 3vw, 36px);
+  background: rgba(251,250,246,.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.head-id { display: flex; align-items: center; gap: 12px; }
+.head-id img { width: 44px; height: 44px; }
+.head-id .wm { font-family: 'Alfa Slab One', serif; font-size: 19px; color: var(--red); letter-spacing: .02em; }
+.head-id .wm .star { color: var(--ink); font-size: .8em; }
+.head-nav { display: flex; align-items: center; gap: clamp(14px, 2vw, 30px); margin-left: auto; }
+.head-nav a { text-decoration: none; font-size: 14.5px; font-weight: 700; transition: color .15s ease; }
+.head-nav a:hover { color: var(--red); }
+.menu-btn {
+  display: none;
+  width: 42px; height: 42px;
+  border: 1.5px solid var(--ink); border-radius: 10px;
+  background: var(--paper);
+  flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+  cursor: pointer; padding: 0;
+}
+.menu-btn i { display: block; width: 18px; height: 2px; background: var(--ink); transition: transform .2s ease, opacity .2s ease; }
+html.mm .menu-btn i:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+html.mm .menu-btn i:nth-child(2) { opacity: 0; }
+html.mm .menu-btn i:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.m-menu {
+  position: fixed; inset: 0; z-index: 35;
+  background: linear-gradient(180deg, #fbf9f3, #f1eee5);
+  padding: 92px 8vw 40px;
+  transform: translateY(-102%);
+  transition: transform .35s ease;
+  display: flex; flex-direction: column;
+}
+html.mm .m-menu { transform: none; }
+html.mm, html.mm body { overflow: hidden; }
+.m-menu a { text-decoration: none; font-size: 22px; font-weight: 900; padding: 20px 4px; border-bottom: 1px solid var(--line); }
+.m-menu a:first-child { border-top: 1px solid var(--line); }
+.m-menu .btn-main { margin-top: 28px; text-align: center; border-bottom: 0; }
+
+.btn-s {
+  display: inline-block; background: var(--red); color: #fff; text-decoration: none;
+  font-weight: 700; font-size: 14px; padding: 10px 22px; letter-spacing: .04em;
+  border-radius: 999px;
+  transition: transform .15s ease, opacity .15s ease;
+}
+.btn-s:hover { transform: translateY(-1px); opacity: .92; }
+
+/* ---- ticker（hero直下・墨帯・当初の2倍サイズ） ---- */
+.marquee {
+  background: var(--ink); color: #f4f3ee;
+  overflow: hidden; white-space: nowrap;
+  padding: 20px 0;
+}
+.marquee .mq-track { display: inline-flex; animation: mq 30s linear infinite; will-change: transform; }
+.marquee .mq-unit { font-size: clamp(20px, 2vw, 27px); font-weight: 900; letter-spacing: .06em; padding-right: 1.4em; }
+.marquee .mq-unit b { color: var(--red); font-weight: 900; padding: 0 1.4em 0 0; }
+@keyframes mq { to { transform: translateX(-50%); } }
+html.static .mq-track { animation: none; }
+@media (prefers-reduced-motion: reduce) { .mq-track { animation: none; } }
+
+/* ---- スペック計器（mono 4連） ---- */
+.spec-tiles {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--line); background: var(--paper);
+  border-radius: var(--r-m); overflow: hidden;
+  margin-top: clamp(36px, 5vh, 56px);
+}
+.spec-tiles > div { padding: 20px 22px 16px; border-left: 1px solid var(--line); position: relative; }
+.spec-tiles > div:first-child { border-left: 0; }
+.spec-tiles .k { font-family: var(--mono); font-size: 10.5px; letter-spacing: .16em; color: var(--sub); text-transform: uppercase; display: block; }
+.spec-tiles .v { font-size: clamp(20px, 2.2vw, 30px); font-weight: 900; line-height: 1.3; display: block; margin-top: 8px; }
+.spec-tiles .v small { font-size: .58em; font-weight: 700; }
+.spec-tiles .v .accent { color: var(--red); }
+
+/* ---- 写真モジュール（朱オフセット枠＋mono キャプション帯） ---- */
+.photo { position: relative; }
+.photo::before { content: ""; position: absolute; inset: 14px -14px -14px 14px; border: 1px solid var(--red); border-radius: var(--r-m); z-index: 0; pointer-events: none; }
+.photo img { position: relative; z-index: 1; display: block; width: 100%; height: 100%; object-fit: cover; border-radius: var(--r-m); }
+.photo .ph-tag {
+  position: absolute; z-index: 2; left: 0; bottom: 0;
+  background: var(--ink); color: #f4f3ee;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
+  padding: 6px 14px;
+  border-radius: 0 var(--r-s) 0 var(--r-m);
+}
+.photo-plain img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* ---- リアルモック共通（ミニLPの文字部品） ---- */
+.b-url span { position: absolute; left: 26px; top: 1px; font-family: var(--mono); font-size: 10.5px; color: #8b897f; letter-spacing: .04em; }
+.m2-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: var(--ink); color: #f2f0ea;
+}
+.m2-header .lg { font-size: 11px; font-weight: 900; letter-spacing: .1em; }
+.m2-header nav { display: flex; gap: 12px; font-size: 8.5px; color: rgba(255,255,255,.75); }
+.m2-hero { position: relative; }
+.m2-hero img { display: block; width: 100%; height: clamp(110px, 17vh, 170px); object-fit: cover; }
+.m2-hero .ttl {
+  position: absolute; left: 12px; bottom: 10px;
+  color: #fff; font-weight: 900; font-size: 14px; letter-spacing: .04em;
+  text-shadow: 0 1px 10px rgba(0,0,0,.55);
+}
+.m2-badges { display: flex; gap: 6px; margin: 10px 14px 0; flex-wrap: wrap; }
+.m2-badges i {
+  font-style: normal; font-size: 8px; font-weight: 700; letter-spacing: .04em;
+  border: 1px solid #b9b7ae; color: #55534c; background: #faf9f4;
+  padding: 3px 8px; line-height: 1.4;
+}
+.m2-head { margin: 12px 14px 0; font-size: 11px; font-weight: 900; letter-spacing: .06em; }
+.m2-head::after { content: ""; display: block; width: 26px; height: 2px; background: var(--red); margin-top: 4px; }
+.m2-photos { display: flex; gap: 8px; margin: 10px 14px 0; }
+.m2-photos figure { flex: 1; position: relative; }
+.m2-photos img { display: block; width: 100%; height: 64px; object-fit: cover; }
+.m2-photos figcaption {
+  position: absolute; left: 0; top: 0; background: var(--ink); color: #fff;
+  font-size: 7.5px; letter-spacing: .1em; padding: 2px 6px;
+}
+.m2-lines { margin: 10px 14px 0; display: grid; gap: 6px; }
+.m2-lines i { display: block; height: 6px; background: var(--boxg2); }
+.m2-lines i:nth-child(2) { width: 86%; }
+.m2-lines i:nth-child(3) { width: 70%; }
+.m2-cards { display: flex; gap: 8px; margin: 10px 14px 0; }
+.m2-cards > div { flex: 1; border: 1px solid var(--line); background: #fff; }
+.m2-cards img { display: block; width: 100%; height: 44px; object-fit: cover; }
+.m2-cards .cl { font-size: 7.5px; color: var(--sub); padding: 4px 6px; letter-spacing: .04em; }
+.m2-btn {
+  margin: 12px 14px 0; height: 32px; background: var(--red); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; letter-spacing: .12em;
+  border-radius: 999px;
+}
+.m2-tel {
+  margin: 12px 0 0; height: 30px; background: var(--red); color: #fff;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .1em;
+}
+.sec-label {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .22em;
+  font-weight: 700;
+  color: var(--red);
+  margin-bottom: 18px;
+}
+h2.sec-title {
+  font-size: clamp(34px, 4.4vw, 56px);
+  font-weight: 900;
+  line-height: 1.35;
+  letter-spacing: .02em;
+}
+.lead { max-width: 36em; color: var(--ink); margin-top: 18px; font-weight: 500; }
+.small { font-size: 14.5px; color: var(--sub); }
+
+/* ============ hero ============ */
+[data-section="hero"] {
+  min-height: 100svh;
+  display: grid;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  padding: 96px 0 130px;
+}
+[data-section="hero"] .marquee { position: absolute; left: 0; right: 0; bottom: 0; }
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: clamp(24px, 4vw, 64px);
+  align-items: center;
+}
+.hero-id {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: clamp(20px, 3.5vh, 40px);
+}
+.hero-id img { width: clamp(64px, 6.4vw, 92px); height: auto; mix-blend-mode: multiply; }
+.hero-wm {
+  position: absolute; z-index: -1; right: -6vw; bottom: -4vh;
+  width: clamp(340px, 38vw, 620px); opacity: .22; pointer-events: none;
+}
+.sec-wm {
+  position: absolute; z-index: 0; right: -3vw; bottom: 30px;
+  width: clamp(300px, 30vw, 480px); opacity: .18; pointer-events: none;
+  transform: scaleX(-1);
+}
+[data-section="feature"] { position: relative; overflow: hidden; }
+[data-section="feature"] .wrap, [data-section="feature"] .feature-band { position: relative; z-index: 1; }
+.hero-brand {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .3em;
+  border: 1px solid var(--ink);
+  display: inline-block;
+  padding: 4px 14px 4px 16px;
+  background: var(--paper);
+}
+.hero-id .svc { font-family: var(--mono); font-size: 10px; letter-spacing: .16em; color: var(--sub); display: block; margin-top: 4px; }
+.hero-catch {
+  font-size: clamp(36px, 4.8vw, 66px);
+  font-weight: 900;
+  line-height: 1.28;
+  letter-spacing: .01em;
+  white-space: nowrap;
+}
+.hero-lead { margin-top: clamp(18px, 3vh, 30px); max-width: 30em; }
+.nw { white-space: nowrap; }
+.hero-cta-row { margin-top: clamp(22px, 3.5vh, 36px); }
+.btn-main {
+  display: inline-block;
+  background: var(--red);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 900;
+  font-size: clamp(17px, 1.6vw, 21px);
+  padding: 20px 44px;
+  letter-spacing: .04em;
+  border-radius: 999px;
+  box-shadow: 0 12px 28px -12px rgba(192,57,43,.55);
+  transition: transform .15s ease, opacity .15s ease;
+}
+.btn-main:hover { transform: translateY(-2px); opacity: .92; }
+.btn-note { margin-top: 14px; font-size: 14.5px; color: var(--sub); }
+.hero-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: clamp(20px, 3vh, 32px); list-style: none; }
+.hero-tags li {
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+  font-size: 14.5px;
+  font-weight: 700;
+  padding: 8px 18px;
+  line-height: 1.5;
+  border-radius: 999px;
+}
+.hero-right { position: relative; padding-right: 40px; padding-bottom: 6px; }
+.mock-wrap { position: relative; }
+.mock-caption { margin-top: 34px; font-size: 15px; color: var(--sub); max-width: 30em; }
+
+/* ============ browser frame mock ============ */
+.browser {
+  background: #fff;
+  border: 1px solid #d9d7d0;
+  border-radius: var(--r-m);
+  box-shadow: 0 24px 60px -24px rgba(27,27,24,.28);
+  overflow: hidden;
+}
+.browser-bar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  background: #f1efe9;
+  border-bottom: 1px solid #ddDBd4;
+}
+.b-dots { display: flex; gap: 6px; }
+.b-dots i { width: 10px; height: 10px; border-radius: 50%; background: #cfcdc5; }
+.b-url {
+  flex: 1; height: 22px; border-radius: 11px;
+  background: #fff; border: 1px solid #ddDBd4;
+  position: relative;
+}
+.b-url::before {
+  content: ""; position: absolute; left: 9px; top: 6px;
+  width: 8px; height: 9px;
+  border: 1.5px solid #9a988f; border-radius: 2px;
+}
+.b-view { padding: 0 0 18px; background: #fff; }
+
+/* ---- 組み上げアニメ（1周8.5s＝組み上げ6s級＋完成静止2s級→ループ）transform/opacityのみ ---- */
+.asm { animation-duration: 8.5s; animation-timing-function: cubic-bezier(.22,1,.36,1); animation-iteration-count: infinite; }
+.asm:nth-child(1) { animation-name: asm1; }
+.asm:nth-child(2) { animation-name: asm2; }
+.asm:nth-child(3) { animation-name: asm3; }
+.asm:nth-child(4) { animation-name: asm4; }
+.asm:nth-child(5) { animation-name: asm5; }
+.asm:nth-child(6) { animation-name: asm6; }
+@keyframes asm1 { 0%,4%  {opacity:0; transform:translateY(-22px);} 11% {opacity:1; transform:none;} 95% {opacity:1; transform:none;} 100% {opacity:0; transform:none;} }
+@keyframes asm2 { 0%,13% {opacity:0; transform:translateY(-22px);} 20% {opacity:1; transform:none;} 95% {opacity:1; transform:none;} 100% {opacity:0; transform:none;} }
+@keyframes asm3 { 0%,22% {opacity:0; transform:translateY(-18px);} 29% {opacity:1; transform:none;} 95% {opacity:1; transform:none;} 100% {opacity:0; transform:none;} }
+@keyframes asm4 { 0%,31% {opacity:0; transform:translateY(-16px);} 38% {opacity:1; transform:none;} 95% {opacity:1; transform:none;} 100% {opacity:0; transform:none;} }
+@keyframes asm5 { 0%,40% {opacity:0; transform:translateY(-16px);} 47% {opacity:1; transform:none;} 95% {opacity:1; transform:none;} 100% {opacity:0; transform:none;} }
+@keyframes asm6 { 0%,50% {opacity:0; transform:translateY(-18px) scale(.96);} 58% {opacity:1; transform:none;} 95% {opacity:1; transform:none;} 100% {opacity:0; transform:none;} }
+html.static .asm { animation: none !important; opacity: 1 !important; transform: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .asm { animation: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+/* ============ 02 こんな会社さんへ ============ */
+[data-section="who"] { padding: clamp(80px, 13vh, 140px) 0; border-top: 1px solid var(--line); }
+.who-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(24px, 4vw, 72px); }
+.who-photo { margin-top: clamp(28px, 4vh, 44px); aspect-ratio: 4 / 3; max-width: 420px; }
+.who-list { list-style: none; }
+.who-list li {
+  border-top: 1px solid var(--line);
+  padding: 34px 4px 34px 0;
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 18px;
+  align-items: baseline;
+  font-size: clamp(23px, 2.4vw, 34px);
+  font-weight: 700;
+  line-height: 1.65;
+}
+.who-list li:last-child { border-bottom: 1px solid var(--line); }
+.who-list .n { font-weight: 900; color: var(--red); font-size: clamp(26px, 2.6vw, 40px); letter-spacing: .05em; }
+[data-section="who"] .lead { font-size: clamp(19px, 1.9vw, 26px); max-width: 30em; }
+
+/* ============ 03 商品と値段 = feature ============ */
+[data-section="feature"] { padding: clamp(80px, 13vh, 140px) 0 clamp(80px, 12vh, 130px); border-top: 1px solid var(--line); }
+.feature-band {
+  width: min(1160px, 92vw); margin-inline: auto;
+  margin-top: clamp(64px, 9vh, 110px);
+  display: grid; grid-template-columns: 1fr 1fr;
+  border-radius: var(--r-l); overflow: hidden;
+  box-shadow: 0 30px 70px -30px rgba(27,27,24,.35);
+}
+.feature-band .photo-plain { min-height: 320px; }
+.feature-band .fb-txt {
+  background: var(--ink); color: #f4f3ee;
+  padding: clamp(36px, 5vw, 64px);
+  display: flex; flex-direction: column; justify-content: center; gap: 14px;
+}
+.feature-band .fb-txt .tech-tag { color: rgba(244,243,238,.6); }
+.feature-band .fb-txt p { max-width: 30em; font-size: 15px; color: rgba(244,243,238,.88); }
+.feature-band .fb-txt strong { font-size: clamp(18px, 1.9vw, 22px); font-weight: 900; line-height: 1.75; }
+.price-lead { margin-top: 20px; max-width: 34em; }
+.price-lead .yen { font-weight: 900; color: var(--red); font-size: 1.5em; letter-spacing: .02em; }
+.tbl-block { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(20px, 3vw, 56px); margin-top: clamp(48px, 7vh, 84px); align-items: start; }
+.tbl-head { position: sticky; top: 96px; }
+.tbl-head h3 { font-size: clamp(20px, 2.2vw, 28px); font-weight: 900; line-height: 1.5; }
+.tbl-head .rule { width: 52px; height: 4px; background: var(--red); margin-top: 14px; }
+.tbl-head.minus .rule { background: var(--ink); }
+.acc > * { border-top: 1px solid var(--line); }
+.acc > *:last-child { border-bottom: 1px solid var(--line); }
+.acc summary, .acc .row {
+  list-style: none;
+  font-size: clamp(16.5px, 1.6vw, 19px);
+  font-weight: 700;
+  line-height: 1.7;
+  padding: 19px 2px;
+  display: grid; grid-template-columns: 1fr 30px; gap: 10px; align-items: center;
+}
+.acc summary { cursor: pointer; transition: color .15s ease; }
+.acc summary:hover { color: var(--red); }
+.acc summary::-webkit-details-marker { display: none; }
+.acc .row { display: block; }
+.acc .tg { justify-self: end; color: var(--red); font-weight: 400; font-size: 24px; line-height: 1; transition: transform .15s ease; }
+.acc details[open] .tg { transform: rotate(45deg); }
+.acc .dt { padding: 0 2px 20px; font-size: 16.5px; color: var(--sub); max-width: 40em; line-height: 1.85; }
+.tbl-foot { margin-top: 28px; font-size: 15.5px; color: var(--sub); }
+
+/* ============ 04 制作サンプル = rail ============ */
+[data-section="rail"] {
+  background:
+    radial-gradient(1400px 900px at 78% -20%, rgba(192,57,43,.13), transparent 60%),
+    radial-gradient(1100px 800px at -10% 110%, rgba(27,27,24,.10), transparent 55%),
+    linear-gradient(180deg, #eeebe2, #e6e3d9);
+  border-top: 1px solid var(--line);
+}
+.rail-inner { height: 100svh; display: flex; flex-direction: column; overflow: hidden; padding: clamp(78px, 10vh, 104px) 0 clamp(16px, 2.5vh, 28px); }
+.rail-head { width: min(1160px, 92vw); margin-inline: auto; flex: 0 0 auto; }
+.rail-head .lead { margin-top: 10px; font-size: 16px; max-width: 44em; line-height: 1.8; }
+.rail-body { flex: 1 1 auto; display: flex; align-items: center; min-height: 0; margin-top: 10px; }
+[data-rail-track] { display: flex; gap: clamp(28px, 3.4vw, 56px); padding-left: max(4vw, (100vw - 1160px) / 2); padding-right: 10vw; width: max-content; align-items: stretch; }
+.panel {
+  width: min(950px, 88vw);
+  flex: 0 0 auto;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-l);
+  box-shadow: 0 30px 70px -30px rgba(27,27,24,.32);
+  padding: clamp(20px, 2.4vw, 36px);
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: clamp(18px, 2.6vw, 40px);
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.panel::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 6px; background: var(--red);
+}
+.panel .p-num { font-family: var(--mono); font-weight: 600; font-size: clamp(46px, 4.8vw, 72px); line-height: 1; color: var(--red); }
+.panel .p-num small { font-size: .28em; letter-spacing: .2em; color: var(--sub); font-weight: 500; margin-left: 10px; }
+.panel h3 { font-size: clamp(21px, 2.2vw, 29px); font-weight: 900; line-height: 1.5; margin-top: 10px; }
+.panel h3 .h3s { display: block; font-size: .62em; color: var(--sub); font-weight: 700; margin-top: 2px; }
+.panel .browser { box-shadow: 0 18px 44px -20px rgba(27,27,24,.25); }
+.panel .cap { font-size: clamp(15px, 1.5vw, 16.5px); color: var(--ink); line-height: 2; margin-top: 14px; font-weight: 500; }
+.panel .cap b { color: var(--red); font-weight: 900; }
+.panel .env { display: inline-block; margin-top: 12px; font-family: var(--mono); font-size: 11px; letter-spacing: .12em; color: var(--sub); border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; background: #fff; }
+.rail-note { width: min(1160px, 92vw); margin: 12px auto 0; flex: 0 0 auto; font-size: 13px; color: var(--sub); }
+.rail-prog { width: min(1160px, 92vw); margin: 16px auto 0; flex: 0 0 auto; display: flex; align-items: center; gap: 16px; }
+.rail-prog .ct { font-family: var(--mono); font-size: 13px; letter-spacing: .18em; color: var(--ink); font-weight: 600; white-space: nowrap; }
+.rail-prog .bar { flex: 1; height: 4px; background: rgba(27,27,24,.12); border-radius: 2px; overflow: hidden; }
+.rail-prog .bar i { display: block; height: 100%; width: 100%; background: var(--red); transform-origin: left center; transform: scaleX(0); }
+/* railパネル内のモック密度（小さめ） */
+.panel .m2-hero img { height: clamp(110px, 16vh, 170px); }
+.panel .m2-photos img { height: clamp(70px, 10vh, 100px); }
+
+/* ============ 05 流れ＋FAQ ============ */
+[data-section="flow"] { padding: clamp(80px, 13vh, 140px) 0; border-top: 1px solid var(--line); }
+.steps {
+  list-style: none;
+  margin-top: clamp(36px, 5vh, 60px);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: clamp(14px, 1.8vw, 26px);
+}
+.steps li {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-m);
+  box-shadow: 0 24px 52px -26px rgba(27,27,24,.38);
+  padding: 24px 20px 26px;
+  position: relative;
+}
+.steps li::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 6px; background: var(--red); border-radius: var(--r-m) var(--r-m) 0 0; }
+.steps .sn { font-size: clamp(34px, 3.2vw, 48px); font-weight: 900; line-height: 1; color: var(--red); letter-spacing: .02em; display: block; }
+.steps h3 { font-size: clamp(16px, 1.5vw, 19.5px); font-weight: 900; margin-top: 12px; line-height: 1.75; }
+.flow-sub { display: grid; grid-template-columns: minmax(260px, 380px) 1fr; gap: clamp(24px, 3.5vw, 60px); align-items: center; margin-top: clamp(48px, 7vh, 84px); }
+.flow-sub .photo { aspect-ratio: 3 / 2; }
+.faq-wrap { margin-top: clamp(72px, 11vh, 120px); }
+.faq { margin-top: clamp(28px, 4vh, 44px); border-top: 1px solid var(--line); }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary {
+  list-style: none;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 1fr 24px;
+  gap: 12px;
+  align-items: baseline;
+  padding: 20px 2px;
+  font-weight: 700;
+  font-size: clamp(16px, 1.7vw, 19px);
+  transition: color .15s ease;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary:hover { color: var(--red); }
+.faq summary .q { color: var(--red); font-weight: 900; margin-right: 14px; }
+.faq summary .tg { justify-self: end; font-weight: 400; transition: transform .15s ease; }
+.faq details[open] summary .tg { transform: rotate(45deg); }
+.faq .a { padding: 0 2px 24px 46px; max-width: 42em; font-size: 16.5px; }
+
+/* ============ 06 close（墨反転） ============ */
+[data-section="close"] {
+  background:
+    radial-gradient(1400px 900px at 74% -10%, rgba(192,57,43,.30), transparent 58%),
+    radial-gradient(1000px 700px at -8% 82%, rgba(192,57,43,.10), transparent 55%),
+    radial-gradient(2000px 1400px at 50% 120%, rgba(0,0,0,.5), transparent 60%),
+    linear-gradient(180deg, #22211d, var(--ink));
+  color: #f4f3ee;
+  padding: clamp(84px, 13vh, 150px) 0 56px;
+}
+.close-grid { display: grid; grid-template-columns: 1fr minmax(380px, 560px); gap: clamp(28px, 4vw, 72px); align-items: start; }
+.close-logo { margin-top: clamp(40px, 6vh, 72px); }
+.close-logo .pad { display: inline-block; }
+.close-logo img { width: clamp(180px, 18vw, 260px); height: auto; display: block; filter: drop-shadow(0 18px 36px rgba(0,0,0,.45)); }
+.close-logo .cap { font-family: var(--mono); font-size: 10px; letter-spacing: .18em; color: rgba(244,243,238,.55); margin-top: 14px; }
+[data-section="close"] mark.tbd { border-bottom-color: #e0806f; }
+.close-title { font-size: clamp(28px, 3.3vw, 44px); font-weight: 900; line-height: 1.5; }
+.close-body { margin-top: 24px; max-width: 36em; color: rgba(244,243,238,.88); }
+.close-cta { margin-top: 36px; }
+/* ---- 見本依頼フォーム ---- */
+.form-card {
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: var(--r-l);
+  padding: clamp(26px, 3.4vw, 44px);
+  box-shadow: 0 34px 80px -34px rgba(0,0,0,.6);
+  max-width: 560px;
+}
+.form-card h3 { font-size: clamp(20px, 2.1vw, 26px); font-weight: 900; line-height: 1.5; }
+.form-card .fnote { font-size: 15px; color: var(--sub); margin-top: 8px; line-height: 1.8; }
+.form-card .frow { margin-top: 18px; }
+.form-card label { display: block; font-size: 14.5px; font-weight: 700; margin-bottom: 6px; }
+.form-card label .opt { font-weight: 500; color: var(--sub); font-size: 12.5px; margin-left: 8px; }
+.form-card input, .form-card textarea {
+  width: 100%;
+  font: inherit;
+  font-size: 16px;
+  padding: 13px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-s);
+  background: #fff;
+  color: var(--ink);
+}
+.form-card input:focus, .form-card textarea:focus { outline: 2px solid var(--red); outline-offset: 1px; border-color: var(--red); }
+.form-card textarea { min-height: 84px; resize: vertical; }
+.form-card .btn-main { width: 100%; text-align: center; border: 0; cursor: pointer; margin-top: 24px; }
+.form-card .fmsg { margin-top: 14px; font-size: 15px; font-weight: 700; display: none; }
+.form-card .fmsg.ok { display: block; color: #1e7a43; }
+.form-card .fmsg.ng { display: block; color: var(--red); }
+.close-tel { margin-top: 14px; font-size: 15px; color: rgba(244,243,238,.75); }
+.op-wrap { margin-top: clamp(72px, 10vh, 110px); display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(20px, 3vw, 56px); align-items: start; }
+.op-wrap h3 { font-size: clamp(19px, 2vw, 25px); font-weight: 900; }
+.op-wrap h3 .rule { width: 44px; height: 3px; background: var(--red); margin-top: 12px; }
+.op-tbl { font-size: 15px; }
+.op-tbl > div {
+  display: grid;
+  grid-template-columns: 12em 1fr;
+  gap: 12px;
+  border-top: 1px solid rgba(244,243,238,.16);
+  padding: 13px 2px;
+}
+.op-tbl > div:last-child { border-bottom: 1px solid rgba(244,243,238,.16); }
+.op-tbl dt { color: rgba(244,243,238,.62); font-weight: 500; }
+.op-tbl dd { color: rgba(244,243,238,.92); }
+.mailnote { margin-top: 40px; font-size: 13.5px; color: rgba(244,243,238,.62); max-width: 46em; line-height: 1.9; }
+
+/* ============ responsive ============ */
+@media (max-width: 900px) {
+  body { font-size: 15px; }
+  .hero-grid { grid-template-columns: 1fr; gap: 34px; padding-top: 10px; }
+  .hero-right { order: -1; margin-inline: auto; }
+  .hero-right { max-width: 480px; padding-right: 30px; }
+  .who-grid, .tbl-block, .op-wrap, .flow-sub, .steps, .close-grid, .feature-band { grid-template-columns: 1fr; }
+  .steps { gap: 12px; }
+  .steps li { display: grid; grid-template-columns: 60px 1fr; gap: 14px; align-items: center; padding: 18px 16px; }
+  .steps .sn { font-size: 32px; text-align: center; }
+  .steps h3 { margin-top: 0; font-size: 16.5px; line-height: 1.65; }
+  .spec-tiles { grid-template-columns: 1fr 1fr; }
+  .spec-tiles > div:nth-child(odd) { border-left: 0; }
+  .spec-tiles > div:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .close-logo { justify-self: start; }
+  .site-head .co { display: none; }
+  .dim-b { display: none; }
+  .tbl-head { position: static; margin-bottom: 4px; }
+  .tbl-block { margin-top: 56px; gap: 18px; }
+  .faq .a { padding-left: 2px; }
+  .op-tbl > div { grid-template-columns: 1fr; gap: 2px; padding: 11px 2px; }
+  .op-tbl dt { font-size: 12px; }
+  [data-rail-track] { padding-left: 4vw; }
+  /* railの縦詰め（100svh内に収める） */
+  .rail-inner { padding-top: 18px; padding-bottom: 12px; }
+  .rail-head .sec-label { margin-bottom: 8px; }
+  .rail-head .sec-title { font-size: 27px; }
+  .rail-head .lead { font-size: 14.5px; line-height: 1.7; margin-top: 8px; }
+  .rail-body { align-items: flex-start; margin-top: 14px; }
+  .panel { gap: 10px; }
+  .panel h3 { font-size: 14.5px; }
+  .panel .cap { font-size: 12px; line-height: 1.65; }
+  .rail-note { font-size: 10.5px; margin-top: 8px; }
+  .panel .browser-bar { padding: 7px 10px; }
+  .panel .m2-header { padding: 6px 10px; }
+  .panel .m2-hero img { height: 62px; }
+  .panel .m2-photos img { height: 46px; }
+  .panel .m2-photos, .panel .m2-badges { margin-top: 8px; }
+  .panel .m2-lines { margin-top: 6px; gap: 4px; }
+  .panel .m2-lines i { height: 5px; }
+  .panel .m2-btn { height: 24px; margin-top: 7px; font-size: 9px; }
+  .panel .m2-tel { height: 24px; margin-top: 9px; font-size: 8.5px; }
+  .panel .b-view { padding-bottom: 9px; }
+  .panel .m2-header { padding: 5px 10px; }
+  .panel .m2-badges { margin-top: 7px; }
+  .rail-inner { padding-top: 68px; padding-bottom: 10px; }
+  .rail-prog { margin-top: 8px; }
+  .rail-prog .ct { font-size: 11px; }
+  .rail-note { font-size: 11px; margin-top: 6px; }
+  [data-section="hero"] { padding-top: 84px; padding-bottom: 100px; }
+  .marquee { padding: 13px 0; }
+  .marquee .mq-unit { font-size: 17px; }
+  .head-nav { display: none; }
+  .menu-btn { display: flex; }
+  .head-id .wm { display: none; }
+  .btn-s { font-size: 12.5px; padding: 8px 14px; white-space: nowrap; }
+  .site-head { padding: 8px 14px; }
+  .hero-id img { width: 56px; }
+  .hero-wm { display: none; }
+  .panel { grid-template-columns: 1fr; width: min(400px, 84vw); gap: 8px; padding: 14px 14px 16px; align-items: start; }
+  .panel .p-num { font-size: 34px; }
+  .panel h3 { font-size: 18.5px; margin-top: 2px; }
+  .panel .cap { font-size: 15px; line-height: 1.7; margin-top: 6px; }
+  .panel .env { margin-top: 8px; font-size: 10px; }
+  .panel .m2-hero img { height: 54px; }
+  .panel .m2-photos img { height: 42px; }
+  .rail-prog { margin-top: 10px; }
+  .ld-bird { height: auto; width: min(76vw, 380px); }
+  .ld-copy { font-size: 17px; letter-spacing: .08em; }
+}
+/* reveal初期状態はJS側（gsap.from）が付与。ここでは何もしない */
+</style>
+</head>
+<body>
+
+<div id="loader" aria-hidden="true">
+  <div class="ld2">
+    <p class="ld-copy">ホームページ制作なら</p>
+    <p class="ld-word">HOMERUN</p>
+    <img class="ld-bird" src="img/logo_kitsutsuki_t.png" alt="">
+  </div>
+</div>
+
+<header class="site-head" id="siteHead">
+  <div class="head-id">
+    <img src="img/logo_kitsutsuki_t.png" alt="ホームランのロゴマーク（キツツキ）">
+    <span class="wm">HOMERUN</span>
+  </div>
+  <nav class="head-nav">
+    <a href="#samples">制作サンプル</a>
+    <a href="#flow">ご依頼の流れ</a>
+    <a href="#price">商品と値段</a>
+    <a href="#faq">よくあるご質問</a>
+  </nav>
+  <a class="btn-s" href="#form">御社の見本を見てみる（無料）</a>
+  <button class="menu-btn" id="menuBtn" aria-label="メニューを開く" aria-expanded="false"><i></i><i></i><i></i></button>
+</header>
+
+<div class="m-menu" id="mMenu">
+  <a href="#samples">制作サンプル</a>
+  <a href="#flow">ご依頼の流れ</a>
+  <a href="#price">商品と値段</a>
+  <a href="#faq">よくあるご質問</a>
+  <a class="btn-main" href="#form">御社の見本を見てみる（無料）</a>
+</div>
+
+<!-- ①hero -->
+<section data-section="hero" class="crosshair">
+  <img class="hero-wm" src="img/logo_kitsutsuki_t.png" alt="" aria-hidden="true">
+  <div class="wrap hero-grid">
+    <div class="hero-left">
+      <h1 class="hero-catch">ホームページを、<br>一発で。</h1>
+      <p class="hero-lead">小さな会社のホームページを、10万円・1ページ・<span class="nw">最短<mark class="tbd">★要決定</mark>日で。</span><br>むずかしい打ち合わせはナシ。</p>
+      <div class="hero-cta-row">
+        <a class="btn-main" href="#form">御社の見本を見てみる（無料）</a>
+        <p class="btn-note">見本づくりに費用はかかりません。見てから決めていただけます。</p>
+      </div>
+      <ul class="hero-tags">
+        <li>1ページまるごと</li>
+        <li>スマホでも見やすく</li>
+        <li>お問い合わせフォーム付き</li>
+      </ul>
+    </div>
+    <div class="hero-right">
+      <div class="mock-wrap hero-mock">
+      <div class="browser">
+        <div class="browser-bar"><span class="b-dots"><i></i><i></i><i></i></span><span class="b-url"><span>mihon.example — 御社の見本</span></span></div>
+        <div class="b-view">
+          <div class="m2-header asm"><span class="lg">御社の社名</span><nav><span>施工事例</span><span>会社案内</span><span>お問い合わせ</span></nav></div>
+          <div class="m2-hero asm"><img src="img/paint_hero.jpg" alt=""><span class="ttl">ここに御社の写真が入ります</span></div>
+          <div class="m2-badges asm"><i>建設業許可番号</i><i>保有資格</i><i>対応エリア</i><i>営業時間</i></div>
+          <div class="m2-head asm">会社の情報</div>
+          <div class="m2-cards asm">
+            <div><img src="img/paint_after.jpg" alt=""><span class="cl">施工事例</span></div>
+            <div><img src="img/reform_interior.jpg" alt=""><span class="cl">施工事例</span></div>
+            <div><img src="img/house_hill.jpg" alt=""><span class="cl">地図</span></div>
+          </div>
+          <div class="m2-btn asm">お問い合わせフォーム</div>
+        </div>
+      </div>
+      <div class="dim dim-r"><i class="dline"></i><span>1 PAGE — 縦に長い1枚のつくり</span></div>
+      <div class="dim dim-b"><i class="dline"></i><span>RESPONSIVE — スマホ・タブレット・パソコン</span></div>
+      </div>
+      <p class="mock-caption">まずは今ある御社の情報だけで、<span class="nw">「見本」を作ってお持ちします。</span></p>
+    </div>
+  </div>
+  <div class="marquee" aria-hidden="true">
+    <div class="mq-track">
+      <span class="mq-unit">ホームページを、10万円で<b>☆</b>1ページまるごと<b>☆</b>最短★要決定日<b>☆</b>むずかしい打ち合わせはナシ<b>☆</b>見本は無料<b>☆</b>誰でもすぐに作れる<b>☆</b>明朗会計<b>☆</b>名義は御社のまま<b>☆</b></span>
+      <span class="mq-unit">ホームページを、10万円で<b>☆</b>1ページまるごと<b>☆</b>最短★要決定日<b>☆</b>むずかしい打ち合わせはナシ<b>☆</b>見本は無料<b>☆</b>誰でもすぐに作れる<b>☆</b>明朗会計<b>☆</b>名義は御社のまま<b>☆</b></span>
+    </div>
+  </div>
+</section>
+
+<!-- ②こんな会社さんへ -->
+<section data-section="who">
+  <div class="wrap who-grid">
+    <div>
+      <span class="tech-tag">SEC. 02 — WHO</span>
+      <h2 class="sec-title">こんな会社さんへ</h2>
+      <p class="lead">ひとつでも当てはまるようでしたら、お役に立てるかもしれません。</p>
+      <figure class="photo who-photo"><img src="img/office.jpg" alt=""><figcaption class="ph-tag">SMALL COMPANY — 現場の事務所</figcaption></figure>
+    </div>
+    <ul class="who-list">
+      <li><span class="n">01</span><span>ホームページがまだない。名刺とチラシだけで、仕事の中身を説明してきた。</span></li>
+      <li><span class="n">02</span><span>昔つくったホームページはあるが、スマホで見ると文字が小さく、開くのに時間がかかる。</span></li>
+      <li><span class="n">03</span><span>現場が忙しい。何度も打ち合わせに時間を取られるのは、正直むずかしい。</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ③商品と値段 -->
+
+
+<!-- ④制作サンプル = rail -->
+<section data-section="rail" id="samples">
+  <div class="rail-inner">
+    <div class="rail-head">
+      <span class="tech-tag">SEC. 03 — SAMPLES ／ TEST ENV.</span>
+      <h2 class="sec-title">制作サンプル</h2>
+      <p class="lead">ホームページの見本です。<br>実際にご依頼をいただいて制作したものではなく、私たちが提案のために作った<span class="nw">制作イメージです。</span><br>会社名は伏せてあります。すべてテスト環境（お試し用の場所）でご覧いただけます。</p>
+    </div>
+    <div class="rail-body">
+      <div data-rail-track>
+        <article class="panel">
+          <div class="browser">
+            <div class="browser-bar"><span class="b-dots"><i></i><i></i><i></i></span><span class="b-url"><span>test-env.example — 外壁塗装A社</span></span></div>
+            <div class="b-view">
+              <div class="m2-header"><span class="lg">外壁塗装A社</span><nav><span>施工事例</span><span>会社案内</span><span>お問い合わせ</span></nav></div>
+              <div class="m2-badges"><i>建設業許可番号</i><i>保有資格</i><i>埼玉県さいたま市</i></div>
+              <div class="m2-photos">
+                <figure><img src="img/paint_before.jpg" alt=""><figcaption>施工前</figcaption></figure>
+                <figure><img src="img/paint_after.jpg" alt=""><figcaption>施工後</figcaption></figure>
+              </div>
+              <div class="m2-lines"><i></i><i></i></div>
+              <div class="m2-btn">お問い合わせ</div>
+            </div>
+          </div>
+          <div class="p-txt">
+            <p class="p-num">01<small>SAMPLE</small></p>
+            <h3>外壁塗装A社様向け<span class="h3s">／制作イメージ</span></h3>
+            <p class="cap">埼玉県さいたま市の外壁塗装会社様を想定して作りました。<br><b>建設業許可番号と保有資格を上のほうに置き</b>、<b>施工前・施工後の写真</b>を並べています。</p>
+            <span class="env">※テスト環境です。</span>
+          </div>
+        </article>
+        <article class="panel">
+          <div class="browser">
+            <div class="browser-bar"><span class="b-dots"><i></i><i></i><i></i></span><span class="b-url"><span>test-env.example — リフォームB社</span></span></div>
+            <div class="b-view">
+              <div class="m2-header"><span class="lg">リフォームB社</span><nav><span>施工事例</span><span>会社案内</span><span>お問い合わせ</span></nav></div>
+              <div class="m2-badges"><i>創業40年超</i><i>対応エリア</i></div>
+              <div class="m2-hero"><img src="img/reform_interior.jpg" alt=""></div>
+              <div class="m2-lines"><i></i><i></i></div>
+              <div class="m2-btn">お問い合わせ</div>
+            </div>
+          </div>
+          <div class="p-txt">
+            <p class="p-num">02<small>SAMPLE</small></p>
+            <h3>リフォームB社様向け<span class="h3s">／制作イメージ</span></h3>
+            <p class="cap">創業から40年を超えるリフォーム会社様を想定して作りました。<br>長く続けてこられたことがひと目で伝わるよう、<b>創業年と対応エリアをいちばん上に</b>置いています。</p>
+            <span class="env">※テスト環境です。</span>
+          </div>
+        </article>
+        <article class="panel">
+          <div class="browser">
+            <div class="browser-bar"><span class="b-dots"><i></i><i></i><i></i></span><span class="b-url"><span>test-env.example — 塗装C社</span></span></div>
+            <div class="b-view">
+              <div class="m2-header"><span class="lg">塗装C社</span><nav><span>施工事例</span><span>会社案内</span><span>お問い合わせ</span></nav></div>
+              <div class="m2-hero"><img src="img/house_hill.jpg" alt=""></div>
+              <div class="m2-lines"><i></i><i></i><i></i></div>
+              <div class="m2-tel">TEL ◯◯◯-◯◯◯-◯◯◯◯（画面下に固定）</div>
+            </div>
+          </div>
+          <div class="p-txt">
+            <p class="p-num">03<small>SAMPLE</small></p>
+            <h3>塗装C社様向け<span class="h3s">／制作イメージ</span></h3>
+            <p class="cap">神奈川県の塗装会社様を想定して作りました。<br><b>電話番号を画面の下に固定</b>し、<b>スマホからそのまま電話をかけられる</b>ようにしています。</p>
+            <span class="env">※テスト環境です。</span>
+          </div>
+        </article>
+      </div>
+    </div>
+    <div class="rail-prog"><span class="ct"><span id="railNow">01</span> / 03</span><span class="bar"><i id="railBar"></i></span></div>
+    <p class="rail-note">※ 掲載しているサンプルは、制作のご依頼を受けたものではありません。</p>
+  </div>
+</section>
+
+<!-- ⑤ご依頼の流れ＋よくあるご質問 -->
+<section data-section="flow" id="flow">
+  <div class="wrap">
+    <span class="tech-tag">SEC. 04 — FLOW</span>
+    <h2 class="sec-title">ご依頼の流れ</h2>
+    <p class="lead">ご連絡をいただいてから公開まで、5つの段階です。</p>
+    <ol class="steps">
+      <li><span class="sn">1</span><h3>フォームで会社の情報や、今のサイトを送信</h3></li>
+      <li><span class="sn">2</span><h3>1営業日以内に貴社のサイトが届きます</h3></li>
+      <li><span class="sn">3</span><h3>サイトを見て、購入するかを決定！</h3></li>
+      <li><span class="sn">4</span><h3>メニューを見ながら、好きにカスタマイズも可能</h3></li>
+      <li><span class="sn">5</span><h3>契約完了後、すぐに公開準備！</h3></li>
+    </ol>
+    <div class="flow-sub">
+      <figure class="photo"><img src="img/desk_sheet.jpg" alt=""><figcaption class="ph-tag">WORK SHEET — ご記入シートは1枚</figcaption></figure>
+      <div>
+        <span class="tech-tag">NO MEETING</span>
+        <p class="small" style="margin-top:10px; font-size: 16.5px;">ご訪問や長いお打ち合わせは必要ありません。ご記入がむずかしい項目は「わからない」とお書きいただければ、こちらからご相談します。</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section data-section="feature" id="price">
+  <img class="sec-wm" src="img/logo_kitsutsuki_t.png" alt="" aria-hidden="true">
+  <div class="wrap">
+    <span class="tech-tag">SEC. 05 — PRICE</span>
+    <h2 class="sec-title">商品と値段</h2>
+    <p class="price-lead">1ページのホームページを、<span class="yen">10万円</span><mark class="tbd">★要決定</mark>（税込・税別）<span class="nw">でお作りします。</span><br>料金がこれ以上かかる場合は、必ず着手の前にお伝えします。</p>
+    <div class="spec-tiles">
+      <div><span class="k">Price — 料金</span><span class="v"><span class="accent">10</span><small>万円</small></span></div>
+      <div><span class="k">Volume — 分量</span><span class="v">1<small>ページ</small></span></div>
+      <div><span class="k">Delivery — 納期</span><span class="v">最短<mark class="tbd">★要決定</mark><small>日</small></span></div>
+      <div><span class="k">Revision — 修正</span><span class="v"><mark class="tbd">★要決定</mark><small>回まで無料</small></span></div>
+    </div>
+    <div class="tbl-block">
+      <div class="tbl-head"><h3>10万円に<br>含まれるもの</h3><div class="rule"></div></div>
+      <div class="acc">
+        <details><summary><span class="tx">1ページのホームページ制作</span><span class="tg">＋</span></summary><p class="dt">縦に長い1枚のつくりです。必要な情報をぜんぶ1ページにまとめるので、お客様が迷子になりません。スマホでも上から順に読み進めていただけます。</p></details>
+        <details><summary><span class="tx">スマホ・タブレット・パソコン対応</span><span class="tg">＋</span></summary><p class="dt">いまはお客様の多くがスマホからご覧になります。そのため、まずスマホでの見え方を整えてからお作りします。タブレットやパソコンで見ても崩れません。</p></details>
+        <details><summary><span class="tx">お問い合わせフォーム 1つ</span><span class="tg">＋</span></summary><p class="dt">お名前やご用件を入力していただく欄をページに設けます。送信された内容は、御社のメールアドレスにそのまま届きます。むずかしい管理画面を覚える必要はありません。</p></details>
+        <details><summary><span class="tx">御社の情報の掲載</span><span class="tg">＋</span></summary><p class="dt">会社名／代表者名／所在地／電話番号／営業時間／定休日／対応エリア／事業内容を、読みやすい形に整えて掲載します。ご記入シートの内容をもとに、こちらで整えます。</p></details>
+        <details><summary><span class="tx">建設業許可番号・保有資格の掲載</span><span class="tg">＋</span></summary><p class="dt">許可番号や保有資格は、初めてのお客様がいちばん安心する情報です。目に入りやすい場所にきちんと掲載します。</p></details>
+        <details><summary><span class="tx">施工事例の掲載 <mark class="tbd">★要決定</mark>件まで</span><span class="tg">＋</span></summary><p class="dt">写真は御社からお預かりします。スマホで撮ったものでかまいません。施工前と施工後がそろっていると、いちばん伝わります。</p></details>
+        <details><summary><span class="tx">地図の掲載</span><span class="tg">＋</span></summary><p class="dt">御社の所在地の地図を載せます。お客様が場所をすぐに確かめられます。</p></details>
+        <details><summary><span class="tx">通信の暗号化</span><span class="tg">＋</span></summary><p class="dt">アドレス欄に鍵マークが出る設定です。「保護されていない通信」という警告が出ない、安心して見られるページにします。</p></details>
+        <details><summary><span class="tx">独自ドメイン（ホームページの住所）の取得代行</span><span class="tg">＋</span></summary><p class="dt">ホームページの住所にあたるものです。取得の手続きはこちらで代行します。費用は年1〜2万円程度の実費で、御社名義・御社のご負担です。名義が御社なので、将来ほかの会社にお願いすることになっても、そのままお引っ越しいただけます。</p></details>
+        <details><summary><span class="tx">公開までの作業一式</span><span class="tg">＋</span></summary><p class="dt">サーバーの設定や表示の確認など、公開までに必要な細かい作業をすべて含みます。</p></details>
+        <details><summary><span class="tx">公開前の修正 <mark class="tbd">★要決定</mark>回まで無料</span><span class="tg">＋</span></summary><p class="dt">公開する前にテスト環境でご覧いただき、直したいところを承ります。文字の打ち間違いなど、こちらの不手際による直しは回数に数えません。</p></details>
+      </div>
+    </div>
+    <div class="tbl-block">
+      <div class="tbl-head minus"><h3>10万円に<br>含まれないもの</h3><div class="rule"></div></div>
+      <div class="acc">
+        <details><summary><span class="tx">写真の撮影</span><span class="tg">＋</span></summary><p class="dt">カメラマンによる撮影は含まれません。掲載する写真は御社からお預かりします。スマホで撮ったものでかまいません。お手元にあまり無い場合も、写真の少ない形でお作りできますので、ご相談ください。</p></details>
+        <details><summary><span class="tx">文章の代筆</span><span class="tg">＋</span></summary><p class="dt">ゼロからの書き起こしは含まれません。ご記入シートにいただいた内容を、こちらで読みやすく整えます。ご記入がむずかしい項目は「わからない」とお書きいただければ、こちらからご相談します。</p></details>
+        <details><summary><span class="tx">ロゴの制作</span><span class="tg">＋</span></summary><p class="dt">ロゴのデザイン制作は含まれません。ロゴをお持ちでない場合は、社名を文字で組んで、きちんと見える形に整えます。</p></details>
+        <details><summary><span class="tx">独自ドメイン・サーバーの費用</span><span class="tg">＋</span></summary><p class="dt">年1〜2万円程度の実費です。御社名義で、御社から直接お支払いいただきます。当社を経由しないので、余計な上乗せがありません。</p></details>
+        <details><summary><span class="tx">メールアドレスの新規作成・引っ越し</span><span class="tg">＋</span></summary><p class="dt">メールまわりの作業は含まれません。いまお使いのメールはそのままお使いいただけます。ご希望の場合は、できることとお見積りをお伝えします。</p></details>
+        <details><summary><span class="tx">御社ご自身で書き換えられる仕組み</span><span class="tg">＋</span></summary><p class="dt">御社ご自身で文章や写真を書き換える仕組みは含まれません。直したい内容が出てきたら、公開後の更新作業として別途承ります（料金は<mark class="tbd">★要決定</mark>）。</p></details>
+        <details><summary><span class="tx">検索対策・広告・SNSの運用</span><span class="tg">＋</span></summary><p class="dt">検索で上位に出すための対策や、広告・SNSの運用は含まれません。まずは「会社の名前で検索したら、きちんとした1ページが出てくる」状態をつくるのが、この商品です。</p></details>
+        <details><summary><span class="tx">今お使いのホームページからのデータの引っ越し</span><span class="tg">＋</span></summary><p class="dt">古いホームページから文章や写真を移す作業は含まれません。載せたい内容は、ご記入シートと写真の形でお預かりします。</p></details>
+        <details><summary><span class="tx">予約・決済・会員登録・多言語の機能</span><span class="tg">＋</span></summary><p class="dt">これらの機能は1ページの範囲を超えるため含まれません。必要な場合は、できることとお見積りをお伝えします。</p></details>
+        <details><summary><span class="tx">公開したあとの更新作業</span><span class="tg">＋</span></summary><p class="dt">別途承ります（料金は<mark class="tbd">★要決定</mark>）。小さな直しから内容の追加まで、ご相談ください。</p></details>
+        <details><summary><span class="tx">チラシ・名刺などの印刷物</span><span class="tg">＋</span></summary><p class="dt">印刷物のデザイン・印刷は含まれません。ご希望があればご相談ください。</p></details>
+      </div>
+    </div>
+  </div>
+  <div class="feature-band">
+    <figure class="photo-plain"><img src="img/baseball_site.jpg" alt=""></figure>
+    <div class="fb-txt">
+      <span class="tech-tag">NOT INCLUDED — ご相談ください</span>
+      <strong>含まれないものも、<span class="nw">ご相談いただければ、</span><br>できることとお見積りをお伝えします。</strong>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="faq-wrap" id="faq">
+      <span class="tech-tag">SEC. 06 — FAQ</span>
+      <h2 class="sec-title">よくあるご質問</h2>
+      <div class="faq">
+        <details>
+          <summary><span class="tx"><span class="q">Q1</span><span>修正は何回までできますか。</span></span><span class="tg">＋</span></summary>
+          <p class="a">公開する前の修正は、<mark class="tbd">★要決定</mark>回まで無料で承ります。<br>それ以降のご依頼も承ります（料金は<mark class="tbd">★要決定</mark>）。<br>文字の打ち間違いなど、こちらの不手際による直しは回数に数えません。</p>
+        </details>
+        <details>
+          <summary><span class="tx"><span class="q">Q2</span><span>写真は、こちらで用意しないといけませんか。</span></span><span class="tg">＋</span></summary>
+          <p class="a">はい。掲載する写真は御社からお預かりします。スマホで撮ったものでかまいません。<br>施工前と施工後がそろっていると、いちばん伝わります。<br>お手元にあまり無い場合も、写真の少ない形でお作りできますので、ご相談ください。</p>
+        </details>
+        <details>
+          <summary><span class="tx"><span class="q">Q3</span><span>公開したあとに直したくなったら、いくらかかりますか。</span></span><span class="tg">＋</span></summary>
+          <p class="a">公開後の変更も承ります。料金は内容によります（<mark class="tbd">★要決定</mark>）。<br>毎月の保守については<mark class="tbd">★要決定</mark>です。<br>なお、サーバーと独自ドメインの費用（年1〜2万円程度の実費）は、御社から直接お支払いいただきます。</p>
+        </details>
+        <details>
+          <summary><span class="tx"><span class="q">Q4</span><span>スマホでも見られますか。</span></span><span class="tg">＋</span></summary>
+          <p class="a">はい。スマホ・タブレット・パソコンのどれでも見やすく表示されます。<br>いまはお客様の多くがスマホからご覧になります。<br>そのため、まずスマホでの見え方を整えてからお作りしています。</p>
+        </details>
+        <details>
+          <summary><span class="tx"><span class="q">Q5</span><span>独自ドメイン（ホームページの住所）は使えますか。</span></span><span class="tg">＋</span></summary>
+          <p class="a">はい。すでにお持ちのドメインがあれば、そのまま使えます。<br>お持ちでない場合は、こちらで取得を代行します。<br>名義は必ず御社名義で取得します。ですので、将来ほかの会社にお願いすることになっても、御社の判断でお引っ越しいただけます。<br>費用は年1〜2万円程度の実費で、御社のご負担となります。</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑥最後の一押し＋運営者情報 = close（墨反転） -->
+<section data-section="close" id="close">
+  <div class="wrap">
+    <div class="close-grid">
+      <div>
+        <h2 class="close-title">まずは、御社の見本を<br>ご覧ください。</h2>
+        <p class="close-body">ご依頼をいただく前に、いま公開されている御社の情報だけで、ホームページの見本をお作りします。<br>費用はかかりません。できあがった物を見てから、お決めいただけます。<br>お断りいただいても、こちらからしつこくご連絡することはありません。</p>
+        <div class="close-cta">
+          <p class="close-tel">お電話でも承ります　<mark class="tbd">★要決定</mark>（電話番号・受付時間）</p>
+        </div>
+        <div class="close-logo">
+          <span class="pad"><img src="img/logo_kitsutsuki_t.png" alt="ホームランのロゴマーク（キツツキ）"></span>
+          <p class="cap">HP SERVICE — STUDIO SAITAMA LLC</p>
+        </div>
+      </div>
+      <form class="form-card" id="form" novalidate>
+        <h3>御社の見本を見てみる（無料）</h3>
+        <p class="fnote">ご記入いただいた情報だけで見本をお作りし、<b>翌日中にメールでお送りします</b>。費用はかかりません。</p>
+        <div class="frow"><label for="f-co">会社名</label><input id="f-co" name="会社名" type="text" required autocomplete="organization"></div>
+        <div class="frow"><label for="f-nm">お名前</label><input id="f-nm" name="お名前" type="text" required autocomplete="name"></div>
+        <div class="frow"><label for="f-em">メールアドレス（見本のお届け先）</label><input id="f-em" name="メールアドレス" type="email" required autocomplete="email"></div>
+        <div class="frow"><label for="f-tel">電話番号<span class="opt">任意</span></label><input id="f-tel" name="電話番号" type="tel" autocomplete="tel"></div>
+        <div class="frow"><label for="f-info">会社の情報がわかるもの<span class="opt">任意（今のホームページ・タウンページ・SNSなど）</span></label><textarea id="f-info" name="会社の情報"></textarea></div>
+        <button class="btn-main" type="submit">御社の見本を見てみる（無料）</button>
+        <p class="fmsg" id="fmsg"></p>
+      </form>
+    </div>
+    <div class="op-wrap">
+      <div><h3>運営者情報</h3><div class="rule"></div></div>
+      <dl class="op-tbl">
+        <div><dt>販売事業者</dt><dd>スタジオサイタマ合同会社</dd></div>
+        <div><dt>運営責任者</dt><dd><mark class="tbd">★要決定</mark></dd></div>
+        <div><dt>所在地</dt><dd>〒152-0001 東京都目黒区中央町2-30-2</dd></div>
+        <div><dt>メールアドレス</dt><dd>info@studiosaitama.com</dd></div>
+        <div><dt>電話番号</dt><dd><mark class="tbd">★要決定</mark></dd></div>
+        <div><dt>受付時間</dt><dd><mark class="tbd">★要決定</mark></dd></div>
+        <div><dt>販売価格</dt><dd>1ページ 10万円<mark class="tbd">★要決定</mark>（税込・税別）</dd></div>
+        <div><dt>商品代金以外に必要な費用</dt><dd>独自ドメイン・サーバーの費用（年1〜2万円程度の実費・御社名義でのご負担）／お振込み手数料</dd></div>
+        <div><dt>お支払い方法</dt><dd><mark class="tbd">★要決定</mark></dd></div>
+        <div><dt>お支払い時期</dt><dd><mark class="tbd">★要決定</mark></dd></div>
+        <div><dt>提供時期</dt><dd>ご記入シートのご返送から最短<mark class="tbd">★要決定</mark>日</dd></div>
+        <div><dt>返品・キャンセルについて</dt><dd><mark class="tbd">★要決定</mark></dd></div>
+      </dl>
+    </div>
+    <p class="mailnote">当社から営業のご案内をメールでお送りする場合があります。<br>配信の停止をご希望の場合は、info@studiosaitama.com までご返信ください。以後お送りいたしません。</p>
+  </div>
+</section>
+
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="vendor/lenis.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+const Q = new URLSearchParams(location.search);
+const SHOT = Q.get('shot');            // hero | feature | rail0 | rail50 | rail100 | close | full
+const SELFTEST = Q.has('selftest');
+const STATIC_MODE = !!SHOT || SELFTEST;
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches || STATIC_MODE;
+if (STATIC_MODE) document.documentElement.classList.add('static');
+if (!STATIC_MODE) { try { history.scrollRestoration = 'manual'; } catch (e) {} scrollTo(0, 0); }
+window.__errors = [];
+addEventListener('error', e => window.__errors.push(String((e && e.message) || e.type)));
+
+let lenis = null;
+if (!REDUCED && matchMedia('(hover:hover)').matches) {
+  lenis = new Lenis({ lerp: 0.09 });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(t => lenis.raf(t * 1000));
+  gsap.ticker.lagSmoothing(0);
+}
+
+/* 出現演出（時間駆動）はすべてこのヘルパ経由。REDUCED/検証時は完成形で静止する */
+function reveal(targets, fromVars, stVars) {
+  if (REDUCED) return;
+  gsap.from(targets, { ...fromVars, scrollTrigger: stVars });
+}
+/* JSが値を進める要素（カウンタ等）は REDUCED では終値を即時表示する */
+if (REDUCED) document.querySelectorAll('[data-count]').forEach(el => el.textContent = el.dataset.count);
+
+/* ---- ローダー（時間駆動・REDUCED/staticは完全スキップ=CSSで非表示＋ここで除去） ---- */
+const loader = document.getElementById('loader');
+let LD = 0;   // hero入場の遅延（ローダーが走るときだけ足す）
+if (loader && (REDUCED || STATIC_MODE)) {
+  loader.remove();
+} else if (loader) {
+  document.documentElement.classList.add('lock');
+  const ldtl = gsap.timeline({ onComplete: () => { loader.remove(); document.documentElement.classList.remove('lock'); scrollTo(0, 0); ScrollTrigger.refresh(); } });
+  ldtl
+    .fromTo('.ld-copy', { y: -34, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, 0.08)
+    .fromTo('.ld-word', { y: -70, opacity: 0, scale: 0.92 }, { y: 0, opacity: 1, scale: 1, duration: 0.65, ease: 'power3.out' }, 0.22)
+    .fromTo('.ld-bird', { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out' }, 0.3)
+    .to('.ld-bird', { y: -10, duration: 0.5, ease: 'power1.inOut', yoyo: true, repeat: 1 }, 1.2)
+    .to(loader, { yPercent: -100, duration: 0.7, ease: 'power3.inOut' }, 2.2);
+  LD = 2.35;
+}
+
+/* ---- hero入場（ため 1.3s級・ローダー明けに続く） ---- */
+if (!REDUCED) {
+  gsap.from('.hero-left > *', { y: 48, opacity: 0, duration: 1.3, ease: 'power3.out', stagger: 0.08, delay: LD + 0.15 });
+  gsap.from('.hero-right', { y: 64, opacity: 0, duration: 1.5, ease: 'power3.out', delay: LD + 0.5 });
+}
+/* 型は「下からのせり上がり」1つ・振幅に段（64/48/36px） */
+reveal('[data-section="who"] .who-grid > div:first-child', { y: 64, opacity: 0, duration: 0.85, ease: 'power3.out' },
+  { trigger: '[data-section="who"]', start: 'top 74%' });
+reveal('[data-section="who"] .who-list li', { y: 48, opacity: 0, duration: 0.75, ease: 'power3.out', stagger: 0.08 },
+  { trigger: '[data-section="who"]', start: 'top 72%' });
+reveal('[data-section="feature"] .sec-title, [data-section="feature"] .price-lead', { y: 64, opacity: 0, duration: 0.85, ease: 'power3.out', stagger: 0.1 },
+  { trigger: '[data-section="feature"]', start: 'top 74%' });
+reveal('.tbl-block', { y: 56, opacity: 0, duration: 0.85, ease: 'power3.out' },
+  { trigger: '.tbl-block', start: 'top 80%' });
+reveal('[data-section="flow"] .sec-title, [data-section="flow"] .lead', { y: 64, opacity: 0, duration: 0.85, ease: 'power3.out', stagger: 0.1 },
+  { trigger: '[data-section="flow"]', start: 'top 74%' });
+reveal('.steps li', { y: 48, opacity: 0, duration: 0.75, ease: 'power3.out', stagger: 0.07 },
+  { trigger: '.steps', start: 'top 80%' });
+reveal('.faq details', { y: 36, opacity: 0, duration: 0.65, ease: 'power3.out', stagger: 0.06 },
+  { trigger: '.faq', start: 'top 82%' });
+reveal('[data-section="close"] .close-title, [data-section="close"] .close-body, [data-section="close"] .close-cta',
+  { y: 64, opacity: 0, duration: 0.9, ease: 'power3.out', stagger: 0.1 },
+  { trigger: '[data-section="close"]', start: 'top 68%' });
+reveal('.close-logo', { y: 48, opacity: 0, duration: 0.85, ease: 'power3.out' },
+  { trigger: '[data-section="close"]', start: 'top 60%' });
+
+/* ---- 奥行き: hero モックはスクロールで別速度（scrub駆動＝REDUCEDでも可） ---- */
+gsap.to('.hero-mock', {
+  y: -60, ease: 'none',
+  scrollTrigger: { trigger: '[data-section="hero"]', start: 'top top', end: 'bottom top', scrub: true }
+});
+
+/* ---- 固定ヘッダは常設（メニューバー）＋ハンバーガー ---- */
+const menuBtn = document.getElementById('menuBtn');
+if (menuBtn) {
+  menuBtn.addEventListener('click', () => {
+    const open = document.documentElement.classList.toggle('mm');
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  document.querySelectorAll('.m-menu a').forEach(al => al.addEventListener('click', () => {
+    document.documentElement.classList.remove('mm');
+    menuBtn.setAttribute('aria-expanded', 'false');
+  }));
+}
+
+/* ---- 追加モジュールの出現（同型・振幅段違い） ---- */
+reveal('.spec-tiles > div', { y: 36, opacity: 0, duration: 0.65, ease: 'power3.out', stagger: 0.07 },
+  { trigger: '.spec-tiles', start: 'top 82%' });
+reveal('.feature-band', { y: 64, opacity: 0, duration: 0.9, ease: 'power3.out' },
+  { trigger: '.feature-band', start: 'top 78%' });
+reveal('.who-photo', { y: 48, opacity: 0, duration: 0.75, ease: 'power3.out' },
+  { trigger: '.who-photo', start: 'top 84%' });
+reveal('.flow-aside', { y: 48, opacity: 0, duration: 0.75, ease: 'power3.out' },
+  { trigger: '.flow-aside', start: 'top 84%' });
+
+/* ---- 横スク（台帳6準拠・snapでパネルごとに止める） ---- */
+const track = document.querySelector('[data-rail-track]');
+const railN = track.children.length;
+const railBar = document.getElementById('railBar');
+const railNow = document.getElementById('railNow');
+function railHud(p) {
+  if (railBar) railBar.style.transform = 'scaleX(' + p + ')';
+  if (railNow) railNow.textContent = '0' + (Math.round(p * (railN - 1)) + 1);
+}
+const railTween = gsap.to(track, {
+  x: () => -(track.scrollWidth - innerWidth), ease: 'none',
+  scrollTrigger: {
+    trigger: '[data-section="rail"]', start: 'top top',
+    end: () => '+=' + (track.scrollWidth - innerWidth),
+    pin: true, scrub: 0.6,
+    snap: { snapTo: 1 / (railN - 1), duration: { min: 0.25, max: 0.55 }, ease: 'power2.inOut' },
+    onUpdate: st => railHud(st.progress),
+    invalidateOnRefresh: true
+  }
+});
+window.__railST = railTween.scrollTrigger;
+
+/* パネル出現は containerAnimation 経由 */
+if (!REDUCED) {
+  document.querySelectorAll('[data-rail-track] .panel').forEach(p => {
+    gsap.from(p, {
+      y: 30, opacity: 0, duration: 0.6, ease: 'power2.out',
+      scrollTrigger: { trigger: p, containerAnimation: railTween, start: 'left 88%' }
+    });
+  });
+}
+
+/* ---- 検証フック（shot / selftest・原型） ---- */
+function gotoShot() {
+  if (!SHOT || SHOT === 'hero' || SHOT === 'full') return;   // 先頭のまま撮る
+  const name = SHOT.startsWith('rail') ? 'rail' : SHOT;
+  ScrollTrigger.getAll().forEach(s => s.kill(true));          // pin スペーサを戻す
+  document.querySelectorAll('[data-section]').forEach(el => {
+    if (el.dataset.section !== name) el.style.display = 'none';
+  });
+  if (SHOT.startsWith('rail')) {
+    const p = { rail0: 0, rail50: 0.5, rail100: 1 }[SHOT] ?? 0;
+    const tr = document.querySelector('[data-rail-track]');
+    gsap.set(tr, { x: -(tr.scrollWidth - innerWidth) * p });
+    railHud(p);
+  }
+  scrollTo(0, 0);
+}
+function selftest() {
+  const all = ScrollTrigger.getAll();
+  const track = document.querySelector('[data-rail-track]');
+  const res = {
+    title: document.title,
+    sections: [...document.querySelectorAll('[data-section]')].map(e => e.dataset.section),
+    pins: all.filter(s => s.vars && s.vars.pin).length,
+    railOverflow: track ? Math.round(track.scrollWidth - innerWidth) : null,
+    railST: !!window.__railST,
+    pageH: Math.round(document.documentElement.scrollHeight),
+    imgBroken: [...document.images].filter(i => !(i.complete && i.naturalWidth)).length,
+    fonts: document.fonts.status,
+    canvasLoop: document.querySelector('canvas') ? !!window.__canvasLoop : null,
+    errors: window.__errors
+  };
+  const pre = document.createElement('pre');
+  pre.id = 'selftest-result'; pre.textContent = JSON.stringify(res);
+  document.body.appendChild(pre);
+  document.title = 'SELFTEST_DONE';
+}
+addEventListener('load', () => {
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => {
+    setTimeout(() => {
+      if (SHOT) gotoShot();
+      if (SELFTEST) setTimeout(selftest, 900);
+    }, 300);
+  });
+});
+
+/* ---- 見本依頼フォーム（送信先: info@studiosaitama.com・FormSubmit経由） ---- */
+const mihonForm = document.getElementById('form');
+if (mihonForm) mihonForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  const msg = document.getElementById('fmsg');
+  if (!mihonForm.checkValidity()) { mihonForm.reportValidity(); return; }
+  const btn = mihonForm.querySelector('button[type="submit"]');
+  btn.disabled = true; msg.className = 'fmsg';
+  const data = Object.fromEntries(new FormData(mihonForm).entries());
+  try {
+    const r = await fetch('https://formsubmit.co/ajax/info@studiosaitama.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ ...data, _subject: '【ホームラン】見本のご依頼', _template: 'table' })
+    });
+    if (!r.ok) throw new Error('send failed');
+    msg.textContent = '送信しました。翌日中に見本のURLをメールでお送りします。';
+    msg.className = 'fmsg ok';
+    mihonForm.reset();
+  } catch (_) {
+    msg.innerHTML = '送信に失敗しました。お手数ですが <a href="mailto:info@studiosaitama.com">info@studiosaitama.com</a> へ直接ご連絡ください。';
+    msg.className = 'fmsg ng';
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+/* hero CTA のアンカーは lenis 使用時もネイティブに任せる（scroll-behavior:auto） */
+</script>
+</body>
+</html>
